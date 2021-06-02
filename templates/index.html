@@ -1,0 +1,46 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Quan ly san xuat{% endblock %}
+
+{% block styles %}
+{{ super() }}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+    socket.on('mqtt_message', function(data) {
+      console.log(data);
+      var text = data;
+      var $textarea = $('#subscribe_messages');
+      $textarea.val(text.toString());
+    })
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+          <h1>Quan ly san xuat</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>Muc tieu: 15</h1>
+        </div>
+      </div>      
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>Da hoan thanh: </h1>
+          <textarea id="subscribe_messages" class="form-control"></textarea>
+        </div>
+      </div>
+</div>
+
+    
+{% endblock %}
