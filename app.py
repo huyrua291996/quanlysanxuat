@@ -46,6 +46,9 @@ mqtt.subscribe("d/3c71bf6c0684/p/UP/1/W_SWITCH", 1)
 global job_done
 job_done = 0
 start_job = False
+with open("log.csv", "w") as log_file:
+    log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    log_writer.writerow(['Vi tri', 'So san pham', 'Thoi gian'])
 
 @app.route('/')
 def index():
