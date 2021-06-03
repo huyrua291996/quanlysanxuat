@@ -43,8 +43,10 @@ bootstrap = Bootstrap(app)
 mqtt.subscribe("d/3c71bf6c0684/p/UP/3/W_SWITCH", 1)
 mqtt.subscribe("d/3c71bf6c0684/p/UP/2/W_SWITCH", 1)
 mqtt.subscribe("d/3c71bf6c0684/p/UP/1/W_SWITCH", 1)
-global job_done
+global job_done, job_done1, job_done2
 job_done = 0
+job_done1 = 0
+job_done2 = 0
 start_job = False
 with open("log.csv", "w") as log_file:
     log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -62,10 +64,11 @@ def index():
 #     mqtt.publish(data['topic'], data['message'], data['qos'])
 
 
-# @socketio.on('subscribe')
-# def handle_subscribe(json_str):
-#     data = json.loads(json_str)
-#     mqtt.subscribe(data['topic'], data['qos'])
+@socketio.on('data1')
+def parse_data1(json_str):
+    data = json.loads(json_str)
+    print(data['heso1'])
+    print(data['muctieu1'])
 
 
 # @socketio.on('unsubscribe_all')
@@ -75,19 +78,22 @@ def index():
 
 @mqtt.on_message()
 def handle_mqtt_message(client, userdata, message):
-    global job_done
-    if (message.topic.startswith("d/3c71bf6c0684/p/UP/3/W_SWITCH") == True):
-        job_done = job_done + 1		
-        now = datetime.now()
-        with open("log.csv", "a") as log_file:
-            log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            log_writer.writerow(['Position 1', job_done, now.strftime("%m/%d/%Y, %H:%M:%S")])
-        print(job_done)
-    elif (message.topic.startswith("d/3c71bf6c0684/p/UP/1/W_SWITCH") == True):
-        job_done = 0
-    elif (message.topic.startswith("d/3c71bf6c0684/p/UP/2/W_SWITCH") == True):
-        start_job = True
-    socketio.emit('mqtt_message', data=job_done)
+    global job_done, job_done1, job_done2
+    topic_list = []
+    topic_list = message.topic.split('/')
+    if (topic_list[1].startswith("3c71bf6c0684") == True):
+        if (topic_list[4].startswith("3") == True):
+            job_done = job_done + 1		
+            now = datetime.now()
+            with open("log.csv", "a") as log_file:
+                log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                log_writer.writerow(['Position 1', job_done, now.strftime("%m/%d/%Y, %H:%M:%S")])
+            #print(job_done)
+        elif (topic_list[4].startswith("1") == True):
+            job_done = 0
+        elif (topic_list[4].startswith("2") == True):
+            start_job = True
+        socketio.emit('mqtt_message', data=job_done)
 
 
 @mqtt.on_log()

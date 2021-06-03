@@ -9,14 +9,38 @@
 {{ super() }}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 <script type="text/javascript" charset="utf-8">
-  $(document).ready(function() {
+  $(document).ready(function () {
     var socket = io.connect('http://' + document.domain + ':' + location.port);
 
-    socket.on('mqtt_message', function(data) {
+    socket.on('mqtt_message', function (data) {
       console.log(data);
       var text = data;
-      var $textarea = $('#subscribe_messages');
-      $textarea.val(text.toString());
+      var $input = $('#hoanthanh1');
+      var heso1 = $('#heso1').val();
+      var muctieu1 = $('#muctieu1').val();
+      var data1 = '{"heso1": "' + heso1 + '", "muctieu1": "' + muctieu1 + '"}';
+      socket.emit('data1', data=data1);
+      $input.val(text.toString());
+    })
+    socket.on('mqtt_message1', function (data) {
+      console.log(data);
+      var text = data;
+      var $input = $('#hoanthanh2');
+      var heso2 = $('#heso2').val();
+      var muctieu2 = $('#muctieu2').val();
+      var data2 = '{"heso2": "' + heso2 + '", "muctieu2": "' + muctieu2 + '"}';
+      socket.emit('data2', data=data2);
+      $input.val(text.toString());
+    })
+    socket.on('mqtt_message2', function (data) {
+      console.log(data);
+      var text = data;
+      var $input = $('#hoanthanh3');
+      var heso3 = $('#heso3').val();
+      var muctieu3 = $('#muctieu3').val();
+      var data3 = '{"heso3": "' + heso3 + '", "muctieu3": "' + muctieu3 + '"}';
+      socket.emit('data3', data=data3);
+      $input.val(text.toString());
     })
   });
 </script>
@@ -24,23 +48,89 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-xs-12">
-          <h1>Quan ly san xuat</h1>
+  <div class="row">
+    <div class="col-xs-12">
+      <h3>Quan ly san xuat</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-4">
+      <form class="form-horizontal">
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 control-label" for="formGroupInputSmall">Vi tri 1</label>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <h1>Muc tieu: 15</h1>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 control-label" for="formGroupInputSmall">He so :</label>
+          <div class="col-sm-2">
+            <input class="form-control" type="text" id="heso1" placeholder="">
+          </div>
         </div>
-      </div>      
-      <div class="row">
-        <div class="col-xs-12">
-          <h1>Da hoan thanh: </h1>
-          <textarea id="subscribe_messages" class="form-control"></textarea>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 control-label" for="formGroupInputSmall">Muc tieu :</label>
+          <div class="col-sm-2">
+            <input class="form-control" type="text" id="muctieu1" placeholder="">
+          </div>
         </div>
-      </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 control-label" for="formGroupInputSmall">Da hoan thanh :</label>
+          <div class="col-sm-2">
+            <input class="form-control" type="text" id="hoanthanh1" placeholder="">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-xs-4">
+      <form class="form-horizontal">
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 control-label" for="formGroupInputSmall">Vi tri 2</label>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 control-label" for="formGroupInputSmall">He so :</label>
+          <div class="col-sm-2">
+            <input class="form-control" type="text" id="heso2" placeholder="">
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 control-label" for="formGroupInputSmall">Muc tieu :</label>
+          <div class="col-sm-2">
+            <input class="form-control" type="text" id="muctieu2" placeholder="">
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 control-label" for="formGroupInputSmall">Da hoan thanh :</label>
+          <div class="col-sm-2">
+            <input class="form-control" type="text" id="hoanthanh2" placeholder="">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-xs-4">
+      <form class="form-horizontal">
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 control-label" for="formGroupInputSmall">Vi tri 3</label>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 control-label" for="formGroupInputSmall">He so :</label>
+          <div class="col-sm-2">
+            <input class="form-control" type="text" id="heso3" placeholder="">
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 control-label" for="formGroupInputSmall">Muc tieu :</label>
+          <div class="col-sm-2">
+            <input class="form-control" type="text" id="muctieu3" placeholder="">
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 control-label" for="formGroupInputSmall">Da hoan thanh :</label>
+          <div class="col-sm-2">
+            <input class="form-control" type="text" id="hoanthanh3" placeholder="">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
-    
+
 {% endblock %}
