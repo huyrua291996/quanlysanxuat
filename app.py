@@ -43,14 +43,20 @@ bootstrap = Bootstrap(app)
 mqtt.subscribe("d/3c71bf6c0684/p/UP/3/W_SWITCH", 1)
 mqtt.subscribe("d/3c71bf6c0684/p/UP/2/W_SWITCH", 1)
 mqtt.subscribe("d/3c71bf6c0684/p/UP/1/W_SWITCH", 1)
-global job_done, job_done1, job_done2
+global job_done, job_done1, job_done2, muctieu1, heso1, muctieu2, heso2, muctieu3, heso3
 job_done = 0
 job_done1 = 0
 job_done2 = 0
+muctieu1 = 0
+heso1 = 0
+muctieu2 = 0
+heso2 = 0
+muctieu3 = 0
+heso3 = 0
 start_job = False
 with open("log.csv", "w") as log_file:
     log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    log_writer.writerow(['Vi tri', 'So san pham', 'Thoi gian'])
+    log_writer.writerow(['Vi tri', 'He so', 'Muc tieu','So san pham', 'Thoi gian'])
 
 @app.route('/')
 def index():
@@ -66,9 +72,24 @@ def index():
 
 @socketio.on('data1')
 def parse_data1(json_str):
+    global muctieu1, heso1
     data = json.loads(json_str)
-    print(data['heso1'])
-    print(data['muctieu1'])
+    muctieu1 = data['muctieu1']
+    heso1 = data['heso1']
+
+@socketio.on('data2')
+def parse_data2(json_str):
+    global muctieu2, heso2
+    data = json.loads(json_str)
+    muctieu2 = data['muctieu2']
+    heso2 = data['heso2']
+
+@socketio.on('data3')
+def parse_data1(json_str):
+    global muctieu3, heso3
+    data = json.loads(json_str)
+    muctieu3 = data['muctieu3']
+    heso3 = data['heso3']
 
 
 # @socketio.on('unsubscribe_all')
@@ -78,7 +99,7 @@ def parse_data1(json_str):
 
 @mqtt.on_message()
 def handle_mqtt_message(client, userdata, message):
-    global job_done, job_done1, job_done2
+    global job_done, job_done1, job_done2, muctieu1, heso1, muctieu2, heso2, muctieu3, heso3
     topic_list = []
     topic_list = message.topic.split('/')
     if (topic_list[1].startswith("3c71bf6c0684") == True):
@@ -87,7 +108,7 @@ def handle_mqtt_message(client, userdata, message):
             now = datetime.now()
             with open("log.csv", "a") as log_file:
                 log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                log_writer.writerow(['Position 1', job_done, now.strftime("%m/%d/%Y, %H:%M:%S")])
+                log_writer.writerow(['Position 1', heso1, muctieu1, job_done, now.strftime("%m/%d/%Y, %H:%M:%S")])
             #print(job_done)
         elif (topic_list[4].startswith("1") == True):
             job_done = 0
