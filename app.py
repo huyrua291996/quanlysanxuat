@@ -169,8 +169,14 @@ def handle_logging(client, userdata, level, buf):
     # print(level, buf)
     pass
 
-
+import os
 if __name__ == '__main__':
-    #socketio.run(app, host='0.0.0.0', port=5000, use_reloader=False, debug=True)
-    socketio.run(app, use_reloader=False, debug=True)
+    portis = os.environ.get('PORT')
+    if(portis == None):
+        portis = 5000
+    else:
+        portis = int(portis)
+    print(portis)
+    socketio.run(app, host='0.0.0.0', port=portis, use_reloader=False, debug=True)
+    #socketio.run(app, use_reloader=False, debug=True)
     #app.run(debug=True)
