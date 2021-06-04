@@ -13,10 +13,19 @@ from flask_socketio import SocketIO
 from flask_bootstrap import Bootstrap
 import csv
 from datetime import datetime
+from models import db
 
 eventlet.monkey_patch()
 
 app = Flask(__name__)
+
+POSTGRES = {
+    'user': 'postgres',
+    'pw': 'nguyenngochuy',
+    'db': 'quanlysanxuat',
+    'host': 'localhost',
+    'port': '5432',
+}
 app.config['SECRET'] = 'my secret key'
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['MQTT_BROKER_URL'] = 'broker.hivemq.com'
@@ -30,6 +39,9 @@ app.config['MQTT_TLS_ENABLED'] = False
 app.config['MQTT_LAST_WILL_TOPIC'] = 'home/lastwill'
 app.config['MQTT_LAST_WILL_MESSAGE'] = 'bye'
 app.config['MQTT_LAST_WILL_QOS'] = 1
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
+%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
+db.init_app(app)
 
 # Parameters for SSL enabled
 # app.config['MQTT_BROKER_PORT'] = 8883
@@ -60,9 +72,9 @@ heso2 = 0
 muctieu3 = 0
 heso3 = 0
 start_job = False
-with open("log.csv", "w") as log_file:
-    log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    log_writer.writerow(['Vi tri', 'He so', 'Muc tieu','So san pham', 'Thoi gian'])
+#with open("log.csv", "w") as log_file:
+#    log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+#    log_writer.writerow(['Vi tri', 'He so', 'Muc tieu','So san pham', 'Thoi gian'])
 
 @app.route('/')
 def index():
@@ -113,9 +125,9 @@ def handle_mqtt_message(client, userdata, message):
             job_done = job_done + 1	
             job_cal = job_done * int(heso1)	
             now = datetime.now()
-            with open("log.csv", "a") as log_file:
-                log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                log_writer.writerow(['Position 1', heso1, muctieu1, job_done, now.strftime("%m/%d/%Y, %H:%M:%S")])
+            #with open("log.csv", "a") as log_file:
+            #    log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            #    log_writer.writerow(['Position 1', heso1, muctieu1, job_done, now.strftime("%m/%d/%Y, %H:%M:%S")])
             #print(job_done)
         elif (topic_list[4].startswith("1") == True):
             job_done = 0
@@ -127,9 +139,9 @@ def handle_mqtt_message(client, userdata, message):
             job_done1 = job_done1 + 1	
             job_cal1 = job_done1 * int(heso2)	
             now = datetime.now()
-            with open("log.csv", "a") as log_file:
-                log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                log_writer.writerow(['Position 2', heso2, muctieu2, job_done1, now.strftime("%m/%d/%Y, %H:%M:%S")])
+            #with open("log.csv", "a") as log_file:
+            #    log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            #    log_writer.writerow(['Position 2', heso2, muctieu2, job_done1, now.strftime("%m/%d/%Y, %H:%M:%S")])
             #print(job_done)
         elif (topic_list[4].startswith("1") == True):
             job_done1 = 0
@@ -141,9 +153,9 @@ def handle_mqtt_message(client, userdata, message):
             job_done2 = job_done2 + 1	
             job_cal2 = job_done2 * int(heso3)	
             now = datetime.now()
-            with open("log.csv", "a") as log_file:
-                log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                log_writer.writerow(['Position 3', heso3, muctieu3, job_done2, now.strftime("%m/%d/%Y, %H:%M:%S")])
+            #with open("log.csv", "a") as log_file:
+            #    log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            #    log_writer.writerow(['Position 3', heso3, muctieu3, job_done2, now.strftime("%m/%d/%Y, %H:%M:%S")])
             #print(job_done)
         elif (topic_list[4].startswith("1") == True):
             job_done2 = 0
