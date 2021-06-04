@@ -39,9 +39,9 @@ app.config['MQTT_TLS_ENABLED'] = False
 app.config['MQTT_LAST_WILL_TOPIC'] = 'home/lastwill'
 app.config['MQTT_LAST_WILL_MESSAGE'] = 'bye'
 app.config['MQTT_LAST_WILL_QOS'] = 1
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
-%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
-db.init_app(app)
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
+#%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
+#db.init_app(app)
 
 # Parameters for SSL enabled
 # app.config['MQTT_BROKER_PORT'] = 8883
