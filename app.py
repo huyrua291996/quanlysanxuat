@@ -28,7 +28,7 @@ POSTGRES = {
 }
 app.config['SECRET'] = 'my secret key'
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['MQTT_BROKER_URL'] = 'test.mosquitto.org'
+app.config['MQTT_BROKER_URL'] = 'mqtt.eclipseprojects.io'
 app.config['MQTT_BROKER_PORT'] = 1883
 app.config['MQTT_CLIENT_ID'] = 'huyrua291996'
 app.config['MQTT_CLEAN_SESSION'] = True
@@ -119,12 +119,13 @@ def handle_mqtt_message(client, userdata, message):
     global job_done, job_done1, job_done2, muctieu1, heso1, muctieu2, heso2, muctieu3, heso3
     topic_list = []
     topic_list = message.topic.split('/')
+    print("have msg")
     if ("TOUCH" in message.payload.decode()):
         if (topic_list[1].startswith("3c71bf6c0684") == True):
             if (topic_list[4].startswith("3") == True):
                 job_done = job_done + 1	
                 job_cal = job_done * int(heso1)	
-                now = datetime.now()
+                #now = datetime.now()
                 #with open("log.csv", "a") as log_file:
                 #    log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                 #    log_writer.writerow(['Position 1', heso1, muctieu1, job_done, now.strftime("%m/%d/%Y, %H:%M:%S")])
@@ -138,7 +139,7 @@ def handle_mqtt_message(client, userdata, message):
             if (topic_list[4].startswith("3") == True):
                 job_done1 = job_done1 + 1	
                 job_cal1 = job_done1 * int(heso2)	
-                now = datetime.now()
+                #now = datetime.now()
                 #with open("log.csv", "a") as log_file:
                 #    log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                 #    log_writer.writerow(['Position 2', heso2, muctieu2, job_done1, now.strftime("%m/%d/%Y, %H:%M:%S")])
@@ -152,7 +153,7 @@ def handle_mqtt_message(client, userdata, message):
             if (topic_list[4].startswith("2") == True):
                 job_done2 = job_done2 + 1	
                 job_cal2 = job_done2 * int(heso3)	
-                now = datetime.now()
+                #now = datetime.now()
                 #with open("log.csv", "a") as log_file:
                 #    log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                 #    log_writer.writerow(['Position 3', heso3, muctieu3, job_done2, now.strftime("%m/%d/%Y, %H:%M:%S")])
